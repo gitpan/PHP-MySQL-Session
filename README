@@ -1,0 +1,131 @@
+    * NAME <#name>
+    * SYNOPSIS <#synopsis>
+    * DESCRIPTION <#description>
+    * OPTIONS <#options>
+    * NOTES <#notes>
+    * AUTHOR <#author>
+    * SEE ALSO <#see also>
+
+------------------------------------------------------------------------
+
+
+  NAME
+
+PHP::MySQL_Session - read / write PHP session stored on a MySQL database
+
+------------------------------------------------------------------------
+
+
+  SYNOPSIS
+
+  use PHP::MySQL_Session;
+
+  my $session = PHP::MySQL_Session->new($id);
+
+  # session id
+  my $id = $session->id;
+
+  # get/set session data
+  my $foo = $session->get('foo');
+  $session->set(bar => $bar);
+
+  # remove session data
+  $session->unregister('foo');
+
+  # remove all session data
+  $session->unset;
+
+  # check if data is registered
+  $session->is_registered('bar');
+
+  # save session data
+  $session->save;
+
+  # destroy session
+  $session->destroy;
+
+  # create session file, if not existent
+  $session = PHP::MySQL_Session->new($new_sid, { create => 1 });
+
+------------------------------------------------------------------------
+
+
+  DESCRIPTION
+
+PHP::MySQL_Session provides a way to read / write PHP4 session data
+stored on a MySQL database, with which you can make your Perl
+application session shared with PHP4.
+
+If you like Apache::Session interface for session management, there is a
+glue for Apache::Session of this module, Apache::Session::PHP.
+
+------------------------------------------------------------------------
+
+
+  OPTIONS
+
+Constructor new takes some options as hashref.
+
+database
+    database where session table lives. default: sessions.
+
+table
+    database table where session data is stored. default: sessions.
+
+userid
+    MySQL user id. default: phpsession.
+
+password
+    MySQL password. default: phpsession.
+
+host
+    MySQL server host address. default: 127.0.0.1.
+
+serialize_handler
+    type of serialization handler. Currently only PHP default
+    serialization is supported.
+
+create
+    whether to create a session record, if it's not existent yet.
+    default: 0 session ID's are generated using
+    Digest::MD5:md5_base64(rand(100) . time)
+
+------------------------------------------------------------------------
+
+
+  NOTES
+
+    * Array in PHP is hash in Perl.
+
+    * Objects in PHP are restored as objects blessed into
+      PHP::Session::Object (Null class) and original class name is
+      stored in _class key.
+
+    * Locking when save()ing data is acquired via exclusive flock, same
+      as PHP implementation.
+
+    * Not tested so much, thus there may be some bugs in
+      (des|s)erialization code. If you find any, tell me via email.
+
+------------------------------------------------------------------------
+
+
+  AUTHOR
+
+Mark Mitchell <mark@lapcrew.com <mailto:mark@lapcrew.com>>
+
+Based on PHP::Session by Tatsuhiko Miyagawa <miyagawa@bulknews.net
+<mailto:miyagawa@bulknews.net>>
+
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+------------------------------------------------------------------------
+
+
+  SEE ALSO
+
+the Apache::Session::PHP manpage </Apache/Session/PHP.html>, WDDX, the
+Apache::Session manpage </Apache/Session.html>, the CGI::kSession
+manpage </CGI/kSession.html>
+
